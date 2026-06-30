@@ -2,13 +2,18 @@
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![PySpark](https://img.shields.io/badge/PySpark-3.x-orange)
-![Databricks](https://img.shields.io/badge/Databricks-ready-red)
-![Delta Lake](https://img.shields.io/badge/Delta%20Lake-supported-brightgreen)
+![Databricks](https://img.shields.io/badge/Databricks-template-red)
+![Delta Lake](https://img.shields.io/badge/Delta%20Lake-optional-brightgreen)
 ![Tests](https://img.shields.io/badge/tests-pytest-green)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-Enterprise-grade ETL pipeline built with **PySpark**, **Databricks**, **Azure Blob Storage** and **Delta Lake** to prepare anonymized legacy ERP/CRM data for a Salesforce-ready target model.
+Enterprise-style ETL pipeline built with Python and PySpark for enterprise data migration workflows.
 
+The project includes:
+- a local execution mode for demonstration purposes;
+- a Databricks deployment template supporting Azure Blob Storage and optional Delta Lake exports.
+
+It prepares anonymized legacy ERP/CRM data for a Salesforce-ready target model.
 This repository is a portfolio project inspired by real enterprise migration constraints: heterogeneous Excel inputs, SQL reference tables, business-rule mapping, anomaly files, mandatory field checks, duplicate detection, address formatting and final export into a clean target dataset.
 
 > All business names, source systems, field names, values and mappings are anonymized.
@@ -17,17 +22,17 @@ This repository is a portfolio project inspired by real enterprise migration con
 
 ## Features
 
+- Configurable business rules engine
+- Data quality validation framework
+- Salesforce-ready target mapping
 - Distributed ingestion from Excel, CSV and SQL/JDBC sources
 - Column normalization and schema alignment
-- Configurable business rules engine
-- Salesforce-ready target mapping
 - Address splitting and target field formatting
 - Reference integrity checks
 - Duplicate external ID detection with diagnostic columns
 - Mandatory field validation with missing-field details
 - Rejection logs by anomaly type
-- Delta Lake export partitioned by region
-- Unit-testable Python modules
+- Local CSV export and optional Delta Lake export for Databricks deployments
 - GitHub Actions CI for automated tests
 
 ---
@@ -44,7 +49,7 @@ flowchart LR
     E --> F[Business Rules Engine]
     F --> G[Data Quality Framework]
 
-    G --> H[CRM-ready Delta Output]
+    G --> H[CRM-ready output]
     G --> I[Rejection Logs by Error Type]
 
     H --> J[Target CRM / Salesforce-ready Model]
@@ -81,9 +86,9 @@ enterprise-data-migration/
 
 - Python
 - PySpark
-- Databricks
-- Delta Lake
-- Azure Blob Storage
+- Databricks (deployment template)
+- Delta Lake (optional export)
+- Azure Blob Storage (deployment template)
 - SQL Server JDBC
 - Pandas
 - Pytest
@@ -145,8 +150,11 @@ python -m src.main --local
 ```
 
 The local run writes CRM-ready records and data-quality logs into the `outputs/` folder.
+The local demo writes CSV outputs for easy inspection.
 
-In Databricks, use [`notebooks/databricks_demo.ipynb`](notebooks/databricks_demo.ipynb) as a deployment template and adapt storage paths, secrets and JDBC settings.
+For Databricks deployments, the export layer also provides an optional `write_delta_table()` function to persist datasets as partitioned Delta Lake tables.
+
+Use [`notebooks/databricks_demo.ipynb`](notebooks/databricks_demo.ipynb) as a deployment template and adapt storage paths, secrets and JDBC settings.
 
 ---
 
